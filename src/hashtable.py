@@ -87,7 +87,11 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        self.capacity = self.capacity * 2
+        new_hash = [None] * self.capacity
+        for i in range(len(self.storage)):
+            new_hash[i] = self.storage[i]
+        self.storage = new_hash
 
 
 
