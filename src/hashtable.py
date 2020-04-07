@@ -57,9 +57,14 @@ class HashTable:
         index = self._hash_mod(key)
         if self.storage[index] is not None:
             # hash collision logic here
-            print('Hash Collision Detected!')
+            current = self.storage[index]
+            while current:
+                if current.next is None:
+                    current.next = LinkedPair(key, value)
+                current = current.next
+
         else:
-            self.storage[index] = value
+            self.storage[index] = LinkedPair(key, value)
 
 
 
