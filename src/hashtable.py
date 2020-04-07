@@ -77,10 +77,10 @@ class HashTable:
         Fill this in.
         '''
         index = self._hash_mod(key)
-        if self.storage[index] is None:
+        if self.storage[index] is None: #Checks if empty
             print('Empty')
         else:
-            current = self.storage[index]
+            current = self.storage[index] #captures head of linked list
             prev = None
             if current.key == key: # Remove first case
                 if current.next is None: #Only item in list
@@ -107,7 +107,16 @@ class HashTable:
         Fill this in.
         '''
         index = self._hash_mod(key)
-        return self.storage[index]
+        if self.storage[index] is None:
+            return None
+        else:
+            current = self.storage[index]
+            while current:
+                if current.key == key:
+                    return current.value:
+                current = current.next
+                
+            return None
 
 
     def resize(self):
