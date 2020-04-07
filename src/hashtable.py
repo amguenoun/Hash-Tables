@@ -80,7 +80,23 @@ class HashTable:
         if self.storage[index] is None:
             print('Empty')
         else:
-            self.storage[index] = None
+            current = self.storage[index]
+            prev = None
+            if current.key == key: # Remove first case
+                if current.next is None: #Only item in list
+                    self.storage[index] = None
+                else: #Items afterwards
+                    self.storage[index] = current.next
+            else:
+                while current:
+                    if current.key == key: # Removes if corrent by moving prev's next to current's next
+                        prev.next = current.next
+                    else:
+                        prev = current
+                        current = current.next
+                    
+
+
 
     def retrieve(self, key):
         '''
