@@ -135,26 +135,37 @@ class HashTable:
 
         Fill this in.
         '''
+        # self.capacity = self.capacity * 2
+        # new_hash = [None] * self.capacity
+        # for i in range(len(self.storage)):
+        #     if self.storage[i] is not None:
+        #         current = self.storage[i]
+        #         while current:
+        #             index = self._hash_mod(current.key)
+        #             if new_hash[index] is not None:
+        #                 new_current = new_hash[index]
+        #                 while new_current:
+        #                     if new_current.next is None:
+        #                         new_current.next= LinkedPair(current.key, current.value)
+        #                         break
+        #                     else:
+        #                         new_current = new_current.next
+        #             else:
+        #                 new_hash[index] = LinkedPair(current.key, current.value)
+        #             current = current.next
+
+        # self.storage = new_hash
+
         self.capacity = self.capacity * 2
-        new_hash = [None] * self.capacity
+        new_table = HashTable(self.capacity)
         for i in range(len(self.storage)):
             if self.storage[i] is not None:
                 current = self.storage[i]
                 while current:
-                    index = self._hash_mod(current.key)
-                    if new_hash[index] is not None:
-                        new_current = new_hash[index]
-                        while new_current:
-                            if new_current.next is None:
-                                new_current.next= LinkedPair(current.key, current.value)
-                                break
-                            else:
-                                new_current = new_current.next
-                    else:
-                        new_hash[index] = LinkedPair(current.key, current.value)
+                    new_table.insert(current.key, current.value)
                     current = current.next
 
-        self.storage = new_hash
+        self.storage = new_table.storage
 
 
 
