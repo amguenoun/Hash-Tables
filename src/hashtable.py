@@ -32,7 +32,10 @@ class HashTable:
 
         OPTIONAL STRETCH: Research and implement DJB2
         '''
-        pass
+        hash_key = 5381
+        for char in key:
+            hash_key = (( hash_key << 5) + hash_key) + ord(char)
+        return hash_key
 
 
     def _hash_mod(self, key):
@@ -54,7 +57,22 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
+        if self.storage[index] is not None:
+            # hash collision logic here
+            current = self.storage[index]
+            while current:
+                if current.key == key:
+                    current.value = value
+                    break
+                elif current.next is None:
+                    current.next = LinkedPair(key, value)
+                    break
+                else:
+                    current = current.next
+
+        else:
+            self.storage[index] = LinkedPair(key, value)
 
 
 
@@ -66,7 +84,27 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
+        if self.storage[index] is None: #Checks if empty
+            print('Empty')
+        else:
+            current = self.storage[index] #captures head of linked list
+            prev = None
+            if current.key == key: # Remove first case
+                if current.next is None: #Only item in list
+                    self.storage[index] = None
+                else: #Items afterwards
+                    self.storage[index] = current.next
+            else:
+                while current:
+                    if current.key == key: # Removes if corrent by moving prev's next to current's next
+                        prev.next = current.next
+                        break
+                    else:
+                        prev = current
+                        current = current.next
+                    
+
 
 
     def retrieve(self, key):
@@ -77,7 +115,17 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
+        if self.storage[index] is None:
+            return None
+        else:
+            current = self.storage[index]
+            while current:
+                if current.key == key:
+                    return current.value
+                current = current.next
+
+            return None
 
 
     def resize(self):
@@ -87,7 +135,37 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        # self.capacity = self.capacity * 2
+        # new_hash = [None] * self.capacity
+        # for i in range(len(self.storage)):
+        #     if self.storage[i] is not None:
+        #         current = self.storage[i]
+        #         while current:
+        #             index = self._hash_mod(current.key)
+        #             if new_hash[index] is not None:
+        #                 new_current = new_hash[index]
+        #                 while new_current:
+        #                     if new_current.next is None:
+        #                         new_current.next= LinkedPair(current.key, current.value)
+        #                         break
+        #                     else:
+        #                         new_current = new_current.next
+        #             else:
+        #                 new_hash[index] = LinkedPair(current.key, current.value)
+        #             current = current.next
+
+        # self.storage = new_hash
+
+        self.capacity = self.capacity * 2
+        new_table = HashTable(self.capacity)
+        for i in range(len(self.storage)):
+            if self.storage[i] is not None:
+                current = self.storage[i]
+                while current:
+                    new_table.insert(current.key, current.value)
+                    current = current.next
+
+        self.storage = new_table.storage
 
 
 
