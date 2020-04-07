@@ -59,9 +59,14 @@ class HashTable:
             # hash collision logic here
             current = self.storage[index]
             while current:
-                if current.next is None:
+                if current.key == key:
+                    current.value = value
+                    break
+                elif current.next is None:
                     current.next = LinkedPair(key, value)
-                current = current.next
+                    break
+                else:
+                    current = current.next
 
         else:
             self.storage[index] = LinkedPair(key, value)
@@ -91,6 +96,7 @@ class HashTable:
                 while current:
                     if current.key == key: # Removes if corrent by moving prev's next to current's next
                         prev.next = current.next
+                        break
                     else:
                         prev = current
                         current = current.next
@@ -113,9 +119,9 @@ class HashTable:
             current = self.storage[index]
             while current:
                 if current.key == key:
-                    return current.value:
+                    return current.value
                 current = current.next
-                
+
             return None
 
 
@@ -129,7 +135,22 @@ class HashTable:
         self.capacity = self.capacity * 2
         new_hash = [None] * self.capacity
         for i in range(len(self.storage)):
-            new_hash[i] = self.storage[i]
+            if self.storage[i] is not None:
+                current = self.storage[i]
+                while current:
+                    index = self._hash_mod(current.key)
+                    if new_hash[index] is not None:
+                        new_current = new_hash[index]
+                        while new_current:
+                            if new_current.next is None:
+                                new_current.next= LinkedPair(current.key, current.value)
+                                break
+                            else:
+                                new_current = new_current.next
+                    else:
+                        new_hash[index] = LinkedPair(current.key, current.value)
+                    current = current.next
+
         self.storage = new_hash
 
 
